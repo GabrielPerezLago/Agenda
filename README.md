@@ -4,13 +4,12 @@
 
 </div>
 
----
+
 
 ## Resumen
 
-Esto es una aplicación de consola desarrollada en JavaScript que simula una agenda de contactos.
+**Esto es una aplicación de consola desarrollada en JavaScript que simula una agenda de contactos.**
 
----
 
 ## Primeros Pasos
 **Antes de empezar es necesario saber que para levantar la base de datos de docker es necesario tener en la raiz el un .env pues necesario para levantar la base de datos en mysql**
