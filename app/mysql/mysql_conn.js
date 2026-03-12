@@ -1,16 +1,14 @@
-import dotenv from 'dotenv'
 import mysql from 'mysql2/promise'
+import getDataToEnv from '../middleware/utils/dotenvUtils.js';
 
-dotenv.config()
 
-
-export default async function connection() {
+export default async function MySqlConnection() {
     try {
-        const HOST = process.env.MYSQL_HOST
-        const USUARIO = process.env.MYSQL_USER
-        const PASS = process.env.MYSQL_PASSWORD;
+        const HOST = getDataToEnv('MYSQL_HOST')
+        const USUARIO = getDataToEnv('MYSQL_USER')
+        const PASS = getDataToEnv('MYSQL_PASSWORD')
         const DATA = `Agenda`
-        const PORT = process.env.MYSQL_PORT
+        const PORT = getDataToEnv('MYSQL_PORT')
 
 
         return await mysql.createConnection({

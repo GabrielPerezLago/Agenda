@@ -1,8 +1,9 @@
-import connect from "../../mongo/mongo_conn.js"
+import MongoConnection from "../../mongo/mongo_conn.js"
+import { getContactos } from "../controllers/MongoControllers.js"
 
-export async function connection_test() {
+export async function mongoConnTest() {
     try {
-    const data = await connect()
+        const data = await MongoConnection()
 
         if (typeof data === 'object' && data != null && Object.entries(data).length > 0 ) {
             return `Conexion a mongo realizada con exito`
@@ -11,6 +12,14 @@ export async function connection_test() {
         }
 
     } catch(ex) {
+        console.error(ex)
+    }
+}
+
+export async function getContactosMongoTest() {
+    try {
+        return await getContactos()
+    } catch (ex) {
         console.error(ex)
     }
 }

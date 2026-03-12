@@ -10,7 +10,7 @@ const config = {
 const cli = new MongoClient(uri, config)
 
 
-export default async function connect() {
+export default async function MongoConnection() {
     try {
         await cli.connect()
         return cli.db(`Agenda`).collection(`contacto`)

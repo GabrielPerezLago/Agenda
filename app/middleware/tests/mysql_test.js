@@ -1,8 +1,8 @@
-import connection from "../../mysql/mysql_conn.js";
+import MySqlConnection from "../../mysql/mysql_conn.js";
 
 export async function mysqlConnTest() {
     try {
-        const data = await connection()
+        const data = await MySqlConnection()
         if (typeof data === 'object' && data != null && Object.entries(data).length > 0) {
             return `Conexion con la base de datos mysql realizada con exito` 
         } else {
