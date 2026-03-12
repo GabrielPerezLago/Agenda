@@ -16,15 +16,11 @@ Esto es una aplicación de consola desarrollada en JavaScript que simula una age
 ### Iniciar app
 
 ```
-
 npm run dev
-
 ```
 
 ### Iniciar test
 
 ```
-
 npm run test
-
 ```
