@@ -12,6 +12,16 @@ export default async function MongoContactosCli() {
             }
         },
 
+        async findByCriteria(params){
+            try {
+                const collection = await MongoConnection()
+                const contactos = await collection.find(params).toArray()
+                return contactos
+            } catch (ex) {
+                return 101;
+            }
+        },
+        
         async createContacto(params) {
             try {
                 if (typeof params !== "object") {
@@ -28,10 +38,10 @@ export default async function MongoContactosCli() {
             }
         },
 
-        async deleteContactoByNombre(nombre) {
+        async deleteContactos(contactoParams) {
             try {
                 const collection = await  MongoConnection()
-                const del = await collection.deleteOne({nombre: nombre})
+                const del = await collection.deleteOne(contactoParams)
 
                 if (del.deletedCount < 1) {
                     return false

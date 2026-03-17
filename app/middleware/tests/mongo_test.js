@@ -1,5 +1,5 @@
 import MongoConnection from "../../mongo/mongo_conn.js"
-import { getContactos } from "../controllers/MongoControllers.js"
+import { createContactos, deleteContato, getContactos } from "../controllers/MongoControllers.js"
 
 export async function mongoConnTest() {
     try {
@@ -19,6 +19,22 @@ export async function mongoConnTest() {
 export async function getContactosMongoTest() {
     try {
         return await getContactos()
+    } catch (ex) {
+        console.error(ex)
+    }
+}
+
+export async function createContactoMongoTest(n, ap, email, tlf, drcc) {
+    try {
+        return await createContactos(n, ap, email, tlf, drcc)
+    } catch(ex) {
+        console.error(ex)
+    }
+}
+
+export async function deleteContactoMongoTest(contacto) {
+    try {
+        return await deleteContato(contacto)
     } catch (ex) {
         console.error(ex)
     }
