@@ -54,7 +54,7 @@ export async function deleteContato(params) {
     const isDel = `Se ha eliminado el contacto correctamente`
     const notDel = `No se ha podido eliminar el contacto, los datos insertados no estan bien o el contacto no existe`
 
-    if (String(params.includes('+'))) {
+    if (params.includes('+')) {
         sanitizeTelefono(params)
         const del = await (await MongoContactosCli()).deleteContactos({telefono: params}) 
         return del ? isDel : notDel 
@@ -62,6 +62,12 @@ export async function deleteContato(params) {
         const del = await (await MongoContactosCli()).deleteContactos({nombre: params})
         return del ? isDel : notDel 
     }
+}
+
+export async function findByCriteria(params) {
+    const filtered = checkAndSanitizeContactos(params)
+    const contactos = await (await MongoContactosCli()).findByCriteria(filtered)
+    return contactos
 }
 
 

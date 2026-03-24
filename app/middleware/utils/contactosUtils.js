@@ -2,6 +2,9 @@ export function isString(param) {
     return typeof param === 'string'
 }
 
+export function removeWhite(param) {
+    return param.toString().repalce(/ /g, "")
+}
 
 export function checkAndSanitizeContactos(params) {
     let errors = { error : 'error'}
@@ -62,3 +65,4 @@ export function checkAndSanitizeContactos(params) {
 export function sanitizeTelefono(param) {
     return param.toString().match(/.{1,3}/g).join(' ')
 }
+

@@ -1,5 +1,5 @@
 import { createContactoMongoTest, deleteContactoMongoTest, getContactosMongoTest, mongoConnTest } from "./mongo_test.js"
-
+import { mysqlConnTest } from './mysql_test.js'
 
 async function main() {
     const mongoTest = await mongoConnTest()
@@ -8,11 +8,11 @@ async function main() {
     const contactosMongo = await getContactosMongoTest()
 
 
-    // const mysqlTest = await mysqlConnTest()
+    const mysqlTest = await mysqlConnTest()
     
     console.log(mongoTest)
     console.log(createdMongo)
-    // console.log(mysqlTest)
+    console.log(mysqlTest)
     console.log(contactosMongo)
     
     const delMongoTest = await deleteContactoMongoTest('+34999000777')

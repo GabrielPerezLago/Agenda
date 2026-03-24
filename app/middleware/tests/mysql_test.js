@@ -1,4 +1,5 @@
 import MySqlConnection from "../../mysql/mysql_conn.js";
+import { getContactosSql } from "../controllers/MySqlController.js";
 
 export async function mysqlConnTest() {
     try {
@@ -11,4 +12,9 @@ export async function mysqlConnTest() {
     } catch(ex) {
         console.error(ex)
     }
+}
+
+export async function getContactosSQLTest() {
+    const contatos = await getContactosSql()
+    return contatos 
 }

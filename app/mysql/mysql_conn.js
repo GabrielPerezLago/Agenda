@@ -11,13 +11,14 @@ export default async function MySqlConnection() {
         const PORT = getDataToEnv('MYSQL_PORT')
 
 
-        return await mysql.createConnection({
+        const data = await mysql.createConnection({
             host: HOST,
             user: USUARIO,
             password: PASS,
             database: DATA,
             port: PORT
         })
+        return data
     } catch(ex) {
         throw new Error(`Error al conectarse a la base de datos mysql , Errror MYSQL0 : ${ex}`)
     }
