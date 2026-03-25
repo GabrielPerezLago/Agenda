@@ -3,7 +3,7 @@ import { checkAndSanitizeContactos, sanitizeTelefono } from "../utils/contactosU
 
 
 export async function getContactosSql() {
-    const contactos = (await MySqlCliContactos()).getContactos()
+    const contactos = await (await MySqlCliContactos()).getContactos()
     return contactos
 }
 
@@ -12,12 +12,12 @@ export async function insertContacto(nombre, apellidos, email, telefono, direcci
 
     const filtered = checkAndSanitizeContactos({nombre: nombre, apellidos: apellidos, email: email, telefono: telefono, direccion: direccion})
     
+    if (Object.keys(filtered).includes('error')){
+        return filtered
+    }
 
     if (await isExistEmail(filtered.email) || await isExistTelefono(filtered.telefono)) return {error: 'error', email: 'No se pueden introducir ni un email ni un telefono existentes'}
 
-    if (Object.keys(filtered).includes('error')){
-        return filtered
-    } 
 
     const data = Object.values(filtered)
     const contacto = await (await MySqlCliContactos()).createContactoSql(data)
@@ -43,7 +43,18 @@ export async function delContatoSQL(params) {
     }
 }
 
+/**
+ * 
+ * @param {*} params 
+ * @returns 
+ * 
+ * FIND BY CRITERIA
+ */
+
 export async function findByCriteriaSQL(params) {
+
+    if (Object.keys(params).length === 0) return await getContactosSql()
+
     const filtered = checkAndSanitizeContactos(params)
 
     if (Object.keys(filtered).includes('error')){
@@ -51,6 +62,7 @@ export async function findByCriteriaSQL(params) {
     }
 
     const contactos = await (await MySqlCliContactos()).findByCriteria(filtered)
+    if (contactos.length <= 0) return `No se ha encontrado ningun contacto con esas credenciales`
     return contactos
 }
 

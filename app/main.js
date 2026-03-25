@@ -1,11 +1,22 @@
 import prompt from 'prompt-sync'
 import { createContactos, deleteContato, findByCriteria, getContactos } from './middleware/controllers/MongoControllers.js'
 import { delContatoSQL, findByCriteriaSQL, getContactosSql, insertContacto } from './middleware/controllers/MySqlController.js'
-import { text } from 'express'
+import { exec } from 'child_process'
+import { error } from 'console'
 
 
 async function main() {
     const input = prompt()
+
+
+    exec('docker compose up -d || docker compose start', (error,stdout, stderr) => {
+        if (error) {
+            console.error(`Error: ${error.message}`)
+            return
+        }
+        
+        
+    })
 
     console.log('************************')
     console.log('******** Agenda ********')
@@ -17,7 +28,7 @@ async function main() {
     let db
 
     do {
-        db = input('Antes con que base de datos deseas trabajar ? (m: Mongo, s: Mysql) ').trim()
+        db = input('Antes con que base de datos deseas trabajar ? (m: Mongo, s: Mysql) ').trim().toLowerCase()
 
         if(db != 'm' && db != 's') {
             console.log()
@@ -29,7 +40,8 @@ async function main() {
     console.log()
     console.log()
     db == 'm' ? console.log('Has elejido mongo') : console.log('Has elegido Mysql') 
-
+    console.log()
+    console.log()
 
     while(true) {
         console.log(' ** Tu Agenda de Contactos **')
@@ -49,9 +61,10 @@ async function main() {
             let ex = true 
 
             while(ex) {
-                const tlf = input('Inserta el numero de télefono (Debe llevar prefijo):  ')
-                const email = input('Inserta email (No puede existir):  ')
-                const nombre = input('Inserta el nombre:  ')
+                console.log('Los capos que contengan un * son oblgatorios.')
+                const tlf = input('Inserta el numero de télefono (Debe llevar prefijo) *:  ')
+                const email = input('Inserta email (No puede existir)*:  ')
+                const nombre = input('Inserta el nombre*:  ')
                 const apellidos = input('Inserta los apellidos:  ')
 
                 //direccion
@@ -61,24 +74,30 @@ async function main() {
                 const prov = input('Provincia: ')
                 const pais = input ('País: ')
 
-                const direccion = [numero, calle, local, prov, pais].join(', ')
-
-                const contacto = db == 'm' ? await createContactos(nombre, apellidos, email, tlf, direccion): await insertContacto(nombre, apellidos, email, tlf, direccion) 
-
-                if (typeof contacto === 'object' && Object.keys(contacto).includes('error')) {
-                    var data = Object.values(contacto).map( (value) =>  [value])
-                    data.shift()
-                    data = data.join(', ')
-
+                if (nombre == "" || email == "" || tlf == "") {
                     console.log()
-                    console.log(data)
+                    console.log('Debes rellenar los campos obligatorios ')
                     console.log()
                 } else {
-                    console.log()
-                    console.log(contacto)
-                    console.log()
-                }
 
+                    const direccion = [numero, calle, local, prov, pais].join(', ')
+
+                    const contacto = db == 'm' ? await createContactos(nombre, apellidos, email, tlf, direccion): await insertContacto(nombre, apellidos, email, tlf, direccion) 
+
+                    if (typeof contacto === 'object' && Object.keys(contacto).includes('error')) {
+                        var data = Object.values(contacto).map( (value) =>  [value])
+                        data.shift()
+                        data = data.join(', ')
+
+                        console.log()
+                        console.log(data)
+                        console.log()
+                    } else {
+                        console.log()
+                        console.log(contacto)
+                        console.log()
+                    }
+                }
                 const exitt = input('Deseas añadir otro contacto ? (Si : s, No: n): ')
 
                 if(exitt == 'n') ex = false 
@@ -87,13 +106,19 @@ async function main() {
             console.log()
             const del = input('Inserte el nombre o el numero de telefono con prefijo (Aviso si elimina por nombre puede eliminar otro contacto de la lista) : ')
             console.log()
-        
-            const contDel = db == 'm' ? await deleteContato(del): await delContatoSQL(del)
 
+            let contDel
+
+            if (del == "") {
+               contDel = "El campo no puede estar vacío"
+            } else {
+                contDel = db == 'm' ? await deleteContato(del): await delContatoSQL(del)
+            }
             console.log()
             console.log(contDel)
             console.log()
         } else if (doing.toLowerCase() === 'b') {
+            
 
             let criteria = {}
             let exit = true
@@ -120,13 +145,17 @@ async function main() {
                     })()
                     break
                     case 'b' : exit = false
+                    break
+                    default: console.log('Debes insertar unos de los paramatros requeridos gracias')
                 }
-                console.log(criteria)
+
+                if (criteria.length > 0)  console.log(criteria)
             }
 
             const contactos = db == 'm' ? await findByCriteria(criteria) : await findByCriteriaSQL(criteria)
+            console.log()
             console.log(contactos)
-            
+            console.log()
 
         } else if (doing.toLocaleLowerCase() == 's') {
             process.exit(1)

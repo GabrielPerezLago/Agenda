@@ -56,9 +56,18 @@ export async function deleteContato(params) {
 
     if (params.includes('+')) {
         sanitizeTelefono(params)
+
+        const exist = await (await MongoContactosCli()).findByCriteria({telefono: params})
+
+        if (exist.length <= 0) return `El telefono insertado no existe. `
+
         const del = await (await MongoContactosCli()).deleteContactos({telefono: params}) 
         return del ? isDel : notDel 
     } else {
+        const exist = await (await MongoContactosCli()).findByCriteria({nombre: params})
+
+        if (exist.length <= 0) return `El nombre insertado no existe`
+
         const del = await (await MongoContactosCli()).deleteContactos({nombre: params})
         return del ? isDel : notDel 
     }
@@ -67,6 +76,7 @@ export async function deleteContato(params) {
 export async function findByCriteria(params) {
     const filtered = checkAndSanitizeContactos(params)
     const contactos = await (await MongoContactosCli()).findByCriteria(filtered)
+    if (contactos.length <= 0) return `No se han encontrado contactos con esas credeciales :(`
     return contactos
 }
 

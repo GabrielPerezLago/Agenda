@@ -1,7 +1,4 @@
-import { Query } from "mongoose"
 import MySqlConnection from "../../mysql/mysql_conn.js"
-import { sanitizeTelefono } from "../utils/contactosUtils.js"
-import { findByCriteria } from "../controllers/MongoControllers.js"
 const SELECT_ID_CONTACTO = `SELECT ID FROM CONTACTO`
 const SELECT_CONTACTOS = `SELECT NOMBRE, APELLIDOS, EMAIL, TELEFONO, DIRECCION FROM CONTACTO`
 const INSERT_CONTACTO = 'INSERT INTO CONTACTO ( NOMBRE, APELLIDOS, EMAIL, TELEFONO, DIRECCION) VALUES (?, ?, ?, ?, ?)'
@@ -85,7 +82,6 @@ export default async function MySqlCliContactos() {
                 const [contacto] = await findByNumero(tlf)
                 return contacto ? true : false
             } catch (ex) {
-                console.error(ex)
             }
         },
         async isExistNombre(nombre) {
