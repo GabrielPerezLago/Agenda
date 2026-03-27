@@ -3,7 +3,7 @@ import { checkAndSanitizeContactos, sanitizeTelefono } from "../utils/contactosU
 
 export async function getContactos() {
     const contactos = (await MongoContactosCli()).getContactos()
-    if (contactos == 100) {
+    if (contactos == 100) { 
         return `A ocurrido un error, no se an encontrado contactos`
     } else {
         return contactos
@@ -19,7 +19,11 @@ export async function getContactos() {
  * @param {*} direcc 
  * 
  * Esta funcion crea en una base de datos mongo en la que se creara un contacto en una base de datos mongo
+ * 
+ * 
+ * 
  * @returns 
+ * Retorna o los contactos o dos tipos de errores , los errores de los params o la existencia de los mismos
  */
 export async function createContactos(nombre, apellidos, email, telef, direcc) {
     let contacto = {
@@ -40,7 +44,7 @@ export async function createContactos(nombre, apellidos, email, telef, direcc) {
 
 
     if (exist.length > 0) {
-        return `El numero de telefono ya ha sido registrado como contacto.`
+        return { error: 'error', telefono: 'El telefono ya ha sido registrado como contacto'}
     }
 
     
