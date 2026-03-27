@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb'
 
-const uri = "mongodb+srv://admin:Hodr%4022@cluster0.fs4o2qj.mongodb.net/?appName=Cluster0"
+const uri = "mongodb+srv://test:test%4022@cluster0.fs4o2qj.mongodb.net/?appName=Cluster0"
 
 const config = {
     serverSelectionTimeoutMS: 3500

@@ -8,10 +8,13 @@
   "main": "index.js",
   "scripts": {
     "dev": "node app/main.js",
-    "test": "node app/middleware/tests/main_test.js"
+    "test": "node app/middleware/tests/main_test.js",
+    "server" : "node app/server.js"
   },
   "dependencies": {
+    "cors": "^2.8.6",
     "dotenv": "^17.3.1",
+    "express": "^5.2.1",
     "mongodb": "^7.1.0",
     "mysql2": "^3.19.1",
     "prompt-sync": "^4.2.0"
