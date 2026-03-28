@@ -28,16 +28,16 @@ export async function insertContacto(nombre, apellidos, email, telefono, direcci
 
 export async function delContatoSQL(params) {
 
-    const isDel = `Se ha eliminado el contacto correctamente`
-    const notDel = `No se ha podido eliminar el contacto, los datos insertados no estan bien o el contacto no existe`
+    const isDel = {contactos: `Se ha eliminado el contacto correctamente`}
+    const notDel = { error: `No se ha podido eliminar el contacto, los datos insertados no estan bien o el contacto no existe`}
     
     if (params.includes('+')) {
         sanitizeTelefono(params)
-        if (!await isExistTelefono(params)) return `El telefono no existe`
+        if (!await isExistTelefono(params)) return {telefono: `El telefono no existe`}
         const del = await (await MySqlCliContactos()).deleteContacto({telefono: params}) 
         return del ? isDel : notDel 
     } else {
-        if (!await isExistNombre(params)) return `El nombre no existe`
+        if (!await isExistNombre(params)) return {nombre: `El nombre no existe`}
         const del = await (await MySqlCliContactos()).deleteContacto({nombre: params})
         return del ? isDel : notDel 
     }
