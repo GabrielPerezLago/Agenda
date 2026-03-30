@@ -57,22 +57,17 @@ export async function createContactos(nombre, apellidos, email, telef, direcc) {
 export async function deleteContato(params) {
     const isDel = {contacto: `Se ha eliminado el contacto correctamente`}
     const notDel = { error: `No se ha podido eliminar el contacto, los datos insertados no estan bien o el contacto no existe`}
-
     if (params.includes('+')) {
-        sanitizeTelefono(params)
-
-        const exist = await (await MongoContactosCli()).findByCriteria({telefono: params})
-
+        const telf = checkAndSanitizeContactos({telefono: params})
+        const exist =  await (await MongoContactosCli()).findByCriteria(telf)
         if (exist.length <= 0) return { telefono: `El telefono insertado no existe.`}
-
-        const del = await (await MongoContactosCli()).deleteContactos({telefono: params}) 
+        const del = await (await MongoContactosCli()).deleteContactos(telf) 
         return del ? isDel : notDel 
     } else {
-        const exist = await (await MongoContactosCli()).findByCriteria({nombre: params})
-
+        const name = checkAndSanitizeContactos({nombre: params})
+        const exist = await (await MongoContactosCli()).findByCriteria(name)
         if (exist.length <= 0) return { nombre: `El nombre insertado no existe`}
-
-        const del = await (await MongoContactosCli()).deleteContactos({nombre: params})
+        const del = await (await MongoContactosCli()).deleteContactos(name)
         return del ? isDel : notDel 
     }
 }

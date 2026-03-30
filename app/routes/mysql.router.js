@@ -24,7 +24,7 @@ MySqlRouter.post('/contactos/create', async (req, res) => {
             return
         }
 
-        res.status(200).json(contactos)
+        res.status(201).json(contactos)
 
     } catch(ex) {
         res.status(404).json({error: 'Error al crear el usuario'})
@@ -34,17 +34,17 @@ MySqlRouter.post('/contactos/create', async (req, res) => {
 
 MySqlRouter.delete('/contactos/delete', async (req, res) => {
     try {
-        const params = req.params.telefono || req.params.nombre
+        const params = req.body.telefono || req.body.nombre
         const del = await delContatoSQL(params)
 
-        if(!Object.keys(del).includes('contactos')) {
+        if(!Object.keys(del).includes('contacto')) {
             res.status(400).json(del)
             return
         }
 
-        res.status(200).json(del)
+        res.status(204).json(del)
     } catch(ex) {
-         res.status.apply(404).json({error: `Error al eliminar el contacto`})
+         res.status(404).json({error: `Error al eliminar el contacto`})
         console.log(`Error al eliminar el contacto en la base de datos mongo Error: ${ex}`)
     }
 })

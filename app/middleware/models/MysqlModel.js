@@ -37,9 +37,9 @@ export default async function MySqlCliContactos() {
                     id = await findByNumero(objParams.telefono)
                 }
                 
-                const [contacto] = await (await MySqlConnection()).query(
+                const [contacto] = await (await MySqlConnection()).execute(
                     query,
-                    [id.ID]
+                    [id[0].ID]
                 )
 
                 return contacto.affectedRows != 0 ? true: false
@@ -80,14 +80,14 @@ export default async function MySqlCliContactos() {
         async isExistTelefono(tlf) {
             try {
                 const [contacto] = await findByNumero(tlf)
-                return contacto ? true : false
+                return contacto.length <= 0 ? false : true
             } catch (ex) {
             }
         },
         async isExistNombre(nombre) {
             let query = SELECT_CONTACTOS + ' WHERE NOMBRE = ?'
             const [contacto] = await (await MySqlConnection()).execute(query, [nombre])
-            return contacto.length ? true : false
+            return contacto.length <= 0 ? false : true
         }
     }
 }
@@ -96,7 +96,7 @@ async function findByNumero(params) {
     try {
         const query = SELECT_ID_CONTACTO + " WHERE TELEFONO = ? "
         const [contacto] = await (await MySqlConnection()).execute(query, [params])
-        return contacto[0]
+        return contacto
     } catch(ex) {
         console.error(ex)
     }
@@ -105,7 +105,7 @@ async function findByName(params) {
     try {
         const query = SELECT_ID_CONTACTO + " WHERE NOMBRE = ? "
         const [contacto] = await (await MySqlConnection()).execute(query, [params] )
-        return contacto[0]
+        return contacto
     } catch (ex) {
         console.error(ex)
     }
