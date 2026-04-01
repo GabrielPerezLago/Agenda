@@ -12,14 +12,16 @@ export function checkAndSanitizeContactos(params) {
     Object.entries(params).forEach( ([key, value]) => {
         if (key == 'nombre') {  
             if (!isString(value)) {
-                value = String(value)
+                value = String(value).toLowerCase()
             }
+            value = value.toLowerCase()
         }
 
         if (key === 'apellidos')  {
             if (!isString(value)) {
-                value = String(value)
+                value = String(value).toLowerCase()
             }
+            value = value.toLowerCase()
         }
 
         if (key == 'email') {
