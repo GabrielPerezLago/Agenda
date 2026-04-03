@@ -75,7 +75,7 @@ export async function deleteContato(params) {
 export async function findByCriteria(params) {
     const filtered = checkAndSanitizeContactos(params)
     const contactos = await (await MongoContactosCli()).findByCriteria(filtered)
-    if (contactos.length <= 0) return `No se han encontrado contactos con esas credeciales :(`
+    if (contactos.length <= 0) return {failed: `No se han encontrado contactos con esas credeciales`}
     return contactos
 }
 

@@ -66,7 +66,7 @@ export async function findByCriteriaSQL(params) {
     }
 
     const contactos = await (await MySqlCliContactos()).findByCriteria(filtered)
-    if (contactos.length <= 0) return `No se ha encontrado ningun contacto con esas credenciales`
+    if (contactos.length <= 0) return { failed: `No se ha encontrado ningun contacto con esas credenciales`}
     return contactos
 }
 

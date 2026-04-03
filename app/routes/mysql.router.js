@@ -1,4 +1,4 @@
-import { delContatoSQL, getContactosSql, insertContacto } from '../middleware/controllers/MySqlController.js'
+import { delContatoSQL, getContactosSql, insertContacto, findByCriteriaSQL } from '../middleware/controllers/MySqlController.js'
 import { Router } from "express"
 const MySqlRouter = Router()
 
@@ -46,6 +46,30 @@ MySqlRouter.delete('/contactos/delete', async (req, res) => {
     } catch(ex) {
          res.status(404).json({error: `Error al eliminar el contacto`})
         console.log(`Error al eliminar el contacto en la base de datos mongo Error: ${ex}`)
+    }
+})
+
+MySqlRouter.post('/contactos/find', async (req, res) => {
+    try {
+        const params = req.body
+        const filter = checkAndSanitizeContactos(params)
+        
+        if(Object.keys(filter).includes("error")) {
+            delete filter.error
+            res.status(404).json(filter)
+            return
+        }
+        
+        const find = await findByCriteriaSQL(params)
+
+        if (Object.keys(find).includes('failed'))  {
+            res.status(404).json(find)
+            return
+        }
+        res.status(200).json(find)
+    } catch (ex) {
+        res.status(404).json({error: "Error al buscar el contacto"})
+        console.error(`Error al buscar el contacto en mysql, Error : ${ex.message}`)
     }
 })
 
