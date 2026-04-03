@@ -87,7 +87,7 @@ export default async function MySqlCliContactos() {
         async isExistNombre(nombre) {
             let query = SELECT_CONTACTOS + ' WHERE NOMBRE = ?'
             const [contacto] = await (await MySqlConnection()).execute(query, [nombre])
-            return contacto.length <= 0 ? false : true
+            return contacto.length > 0
         }
     }
 }

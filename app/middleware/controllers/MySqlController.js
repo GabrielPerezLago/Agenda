@@ -39,7 +39,9 @@ export async function delContatoSQL(params) {
         return del ? isDel : notDel 
     } else {
         const name = checkAndSanitizeContactos({nombre: params})
-        if (!await isExistNombre(name)) return {nombre: `El nombre no existe`}
+        const exist = await isExistNombre(name)
+        console.info(exist)
+        if (exist) return {nombre: `El nombre no existe`}
         const del = await (await MySqlCliContactos()).deleteContacto(name)
         return del ? isDel : notDel 
     }

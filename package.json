@@ -1,9 +1,9 @@
 {
   "name": "agendacontactos",
-  "version": "1.0.0",
-  "description": "Agenda de contactos por terminal",
+  "version": "v2.0.0",
+  "description": "Api de agenda de contactos que ataca a dos bases de datos mysql y mongodb",
   "license": "ISC",
-  "author": "",
+  "author": "Gabriel",
   "type": "module",
   "main": "index.js",
   "scripts": {

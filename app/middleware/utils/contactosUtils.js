@@ -8,26 +8,25 @@ export function removeWhite(param) {
 
 export function checkAndSanitizeContactos(params) {
     let errors = { error : 'error'}
-    
     Object.entries(params).forEach( ([key, value]) => {
         if (key == 'nombre') {  
             if (!isString(value)) {
-                value = String(value).toLowerCase()
+                params[key] = String(value).toLowerCase()
             }
-            value = value.toLowerCase()
+            params[key] = value.toLowerCase()
         }
 
         if (key === 'apellidos')  {
             if (!isString(value)) {
-                value = String(value).toLowerCase()
+                params[key] = String(value).toLowerCase()
             }
-            value = value.toLowerCase()
+            params[key] = value.toLowerCase()
         }
 
         if (key == 'email') {
 
             if (!isString(value)){
-                value = String(value)
+                params[key] = String(value)
             }
 
             if (!value.toString().includes('@') || !value.includes('.')){
@@ -52,7 +51,7 @@ export function checkAndSanitizeContactos(params) {
         if (key == 'direccion') {
             
             if (!isString(value)){
-                value = String(value)
+                params[key] = String(value)
             }
 
             if (!value.toString().includes(',')) {
