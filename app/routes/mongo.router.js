@@ -12,7 +12,7 @@ MongoRouter.get('/contactos', async (req, res) => {
         res.status(200).json(contactos)
     
     } catch(ex) { 
-        res.status(400).json({error: `Error al obtener los contactos de Mongo`})
+        res.status(404).json({error: `Error al obtener los contactos de Mongo`})
         console.log(`Error al obtener los contacos de mongo, Error : ${ex}`);
     }
 })
@@ -47,7 +47,7 @@ MongoRouter.delete('/contactos/delete', async (req, res) => {
 
         res.status(204).json(contactos)
     } catch(ex) {
-        res.status(400).json({error: `Error al eliminar el contacto`})
+        res.status(404).json({error: `Error al eliminar el contacto`})
         console.log(`Error al eliminar el contacto en la base de datos mongo Error: ${ex}`)
     }
 })
@@ -59,13 +59,13 @@ MongoRouter.post("/contactos/find",async (req, res) => {
 
         if(Object.keys(filter).includes("error")) {
             delete filter.error
-            res.status(404).json(filter)
+            res.status(400).json(filter)
             return
         }
 
         const find = await findByCriteria(params)
         if (Object.keys(find).includes('failed'))  {
-            res.status(404).json(find)
+            res.status(400).json(find)
             return
         }
         res.status(200).json(find)        
