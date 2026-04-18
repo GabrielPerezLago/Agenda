@@ -8,7 +8,7 @@ MySqlRouter.get('/contactos', async (req, res) => {
         console.log(`Contacos de MySql: ${contactos} `)
         res.status(200).json(contactos)
     } catch(ex) { 
-        res.status(400).json({ message: `Error al obtener los contacos de Mysql` })
+        res.status(404).json({ message: `Error al obtener los contacos de Mysql` })
         console.log(`Error al obtener los datos de sql: Error: ${ex}`)
     } 
 })
