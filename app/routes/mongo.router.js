@@ -7,7 +7,13 @@ const MongoRouter = Router()
 MongoRouter.get('/contactos', async (req, res) => {
     try { 
 
-        const contactos = await getContactos()
+        let contactos = await getContactos()
+
+        contactos = contactos.map((contacto) => {
+            contacto["id"] = contacto._id;
+            delete contacto._id
+            return contacto
+        });
         console.log(`Contactos de Mongo: ${contactos}`)
         res.status(200).json(contactos)
     
